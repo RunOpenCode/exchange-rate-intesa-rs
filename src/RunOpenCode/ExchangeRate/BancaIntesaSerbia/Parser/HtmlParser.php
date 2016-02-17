@@ -16,7 +16,6 @@ use RunOpenCode\ExchangeRate\Model\Rate;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Api;
 use Symfony\Component\DomCrawler\Crawler;
 
-
 /**
  * Class HtmlParser
  *
@@ -60,118 +59,125 @@ class HtmlParser
     public function getRates()
     {
         if (!$this->rates) {
-            $this->extractRates();
+            $this->rates = $this->parseHtml($this->html, $this->date);
         }
 
         return $this->rates;
     }
 
-    private function extractRates()
+    private function parseHtml($html, \DateTime $date)
     {
-        $crawler = new Crawler($this->html);
+        $crawler = new Crawler($html);
         $crawler = $crawler->filter('table');
 
-        $buildRate = function($value, $currencyCode, $rateType, $date) {
+        return $this->extractRates($crawler, $date);
+    }
 
-            return new Rate(
-                Api::NAME,
-                $value,
-                $currencyCode,
-                $rateType,
-                $date,
-                'RSD',
-                new \DateTime('now'),
-                new \DateTime('now')
-            );
-        };
+    private function extractRates(Crawler $crawler, \DateTime $date)
+    {
+        $rates = array();
 
-        $nodesArray = $crawler->filter('tr')->each(function (Crawler $node, $i) {
-            return $node->html();
-        });
+        $crawler->filter('tr')->each(function (Crawler $node) use ($date, &$rates) {
 
-        foreach ($nodesArray as $node) {
+            $row = $this->parseRow($node);
 
-            $crawler->clear();
+            if (null !== $row) {
 
-            $crawler->add($node);
-
-            $crawler->filter('td')->each(function (Crawler $node, $i) {
-
-                if($i == 1) {
-                    $this->currentRate['currencyCode'] = trim($node->text());
-                }
-
-                if($i == 2) {
-                    $this->currentRate['unit'] = (int) trim($node->text());
-                }
-
-                if($i == 3) {
-                    $this->currentRate['foreign_exchange_buying'] = (float) trim($node->text());
-                }
-
-                if($i == 4) {
-                    $this->currentRate['default'] = (float) trim($node->text());
-                }
-
-                if($i == 5) {
-                    $this->currentRate['foreign_exchange_selling'] = (float) trim($node->text());
-                }
-
-                if($i == 6) {
-                    $this->currentRate['foreign_cash_buying'] = (float) trim($node->text());
-                }
-
-                if($i == 7) {
-                    $this->currentRate['foreign_cash_selling'] = (float) trim($node->text());
-                }
-
-            });
-
-            //make rates for currency
-            if(strlen($this->currentRate['currencyCode']) === 3) {
-                $this->rates[] = $buildRate(
-                    $this->currentRate['default'] / $this->currentRate['unit'],
-                    $this->currentRate['currencyCode'],
+                $rates[] = $this->buildRate(
+                    $row['default'] / $row['unit'],
+                    $row['currencyCode'],
                     'default',
-                    $this->date
+                    $date
                 );
 
-                if ($this->currentRate['foreign_exchange_buying'] > 0) {
-                    $this->rates[] = $buildRate(
-                        $this->currentRate['foreign_exchange_buying'] / $this->currentRate['unit'],
-                        $this->currentRate['currencyCode'],
+                if ($row['foreign_exchange_buying'] > 0) {
+                    $rates[] = $this->buildRate(
+                        $row['foreign_exchange_buying'] / $row['unit'],
+                        $row['currencyCode'],
                         'foreign_exchange_buying',
-                        $this->date
+                        $date
                     );
                 }
 
-                if ($this->currentRate['foreign_exchange_selling'] > 0) {
-                    $this->rates[] = $buildRate(
-                        $this->currentRate['foreign_exchange_selling'] / $this->currentRate['unit'],
-                        $this->currentRate['currencyCode'],
+                if ($row['foreign_exchange_selling'] > 0) {
+                    $rates[] = $this->buildRate(
+                        $row['foreign_exchange_selling'] / $row['unit'],
+                        $row['currencyCode'],
                         'foreign_exchange_selling',
                         $this->date
                     );
                 }
 
-                if ($this->currentRate['foreign_cash_buying'] > 0) {
-                    $this->rates[] = $buildRate(
-                        $this->currentRate['foreign_cash_buying'] / $this->currentRate['unit'],
-                        $this->currentRate['currencyCode'],
+                if ($row['foreign_cash_buying'] > 0) {
+                    $rates[] = $this->buildRate(
+                        $row['foreign_cash_buying'] / $row['unit'],
+                        $row['currencyCode'],
                         'foreign_cash_buying',
                         $this->date
                     );
                 }
 
-                if ($this->currentRate['foreign_cash_selling'] > 0) {
-                    $this->rates[] = $buildRate(
-                        $this->currentRate['foreign_cash_selling'] / $this->currentRate['unit'],
-                        $this->currentRate['currencyCode'],
+                if ($row['foreign_cash_selling'] > 0) {
+                    $rates[] = $this->buildRate(
+                        $row['foreign_cash_selling'] / $row['unit'],
+                        $row['currencyCode'],
                         'foreign_cash_selling',
                         $this->date
                     );
                 }
             }
-        }
+        });
+
+        return $rates;
+    }
+
+    private function parseRow(Crawler $crawler)
+    {
+        $currentRow = array(
+            'currencyCode' => ''
+        );
+
+        $crawler->filter('td')->each(function (Crawler $node, $i) use (&$currentRow) {
+
+            switch ($i) {
+                case 1:
+                    $currentRow['currencyCode'] = trim($node->text());
+                    break;
+                case 2:
+                    $currentRow['unit'] = (int)trim($node->text());
+                    break;
+                case 3:
+                    $currentRow['foreign_exchange_buying'] = (float)trim($node->text());
+                    break;
+                case 4:
+                    $currentRow['default'] = (float)trim($node->text());
+                    break;
+                case 5:
+                    $currentRow['foreign_exchange_selling'] = (float)trim($node->text());
+                    break;
+                case 6:
+                    $currentRow['foreign_cash_buying'] = (float)trim($node->text());
+                    break;
+                case 7:
+                    $currentRow['foreign_cash_selling'] = (float)trim($node->text());
+                    break;
+            }
+        });
+
+        return strlen($currentRow['currencyCode']) === 3 ? $currentRow : null;
+    }
+
+    private function buildRate($value, $currencyCode, $rateType, $date) {
+
+        return new Rate(
+            Api::NAME,
+            $value,
+            $currencyCode,
+            $rateType,
+            $date,
+            'RSD',
+            new \DateTime('now'),
+            new \DateTime('now')
+        );
     }
 }

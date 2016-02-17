@@ -4,7 +4,7 @@
 
     <testsuites>
 
-        <testsuite name="National Bank of Serbia rates crawler test.">
+        <testsuite name="Banca Intesa Serbia - rates crawler test.">
             <directory suffix="Test.php">./test/</directory>
         </testsuite>
 

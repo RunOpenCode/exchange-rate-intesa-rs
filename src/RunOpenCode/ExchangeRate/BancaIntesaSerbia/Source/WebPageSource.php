@@ -101,10 +101,10 @@ final class WebPageSource implements SourceInterface
      */
     private function load(\DateTime $date)
     {
-
         $parser = new HtmlParser($this->browser->getHtmlDocument($date), $date);
 
         foreach ($parser->getRates() as $rate) {
+
             if (!array_key_exists($rate->getRateType(), $this->cache)) {
                 $this->cache[$rate->getRateType()] = array();
             }
