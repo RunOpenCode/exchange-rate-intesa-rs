@@ -21,12 +21,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "RunOpenCode\\ExchangeRate\\NationalBankOfSerbia\\": "src/RunOpenCode/ExchangeRate/BancaIntesaSerbia/"
+            "RunOpenCode\\ExchangeRate\\BancaIntesaSerbia\\": "src/RunOpenCode/ExchangeRate/BancaIntesaSerbia/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "RunOpenCode\\ExchangeRate\\NationalBankOfSerbia\\Tests\\": "test/"
+            "RunOpenCode\\ExchangeRate\\BancaIntesaSerbia\\Tests\\": "test/"
         }
     },
     "require": {
