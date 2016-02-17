@@ -1,9 +1,7 @@
 Exchange rate source: Banca Intesa - Republic of Serbia
 ====
 
-
 [![Packagist](https://img.shields.io/packagist/v/RunOpenCode/exchange-rate-intesa-rs.svg)](https://packagist.org/packages/runopencode/exchange-rate-intesa-rs)
-
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/RunOpenCode/exchange-rate-intesa-rs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/RunOpenCode/exchange-rate-intesa-rs/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/RunOpenCode/exchange-rate-intesa-rs/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/RunOpenCode/exchange-rate-intesa-rs/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/RunOpenCode/exchange-rate-intesa-rs/badges/build.png?b=master)](https://scrutinizer-ci.com/g/RunOpenCode/exchange-rate-intesa-rs/build-status/master)
