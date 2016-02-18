@@ -56,7 +56,7 @@ class HtmlParser
      */
     public function getRates()
     {
-        if (!$this->rates) {
+        if (empty($this->rates)) {
             $this->rates = $this->parseHtml($this->html, $this->date);
         }
 
@@ -125,7 +125,6 @@ class HtmlParser
                     'foreign_cash_selling',
                     $this->date
                 );
-
             }
         });
 
@@ -137,7 +136,6 @@ class HtmlParser
                 unset($rates[$key]);
             }
         }
-
 
         return $rates;
     }
