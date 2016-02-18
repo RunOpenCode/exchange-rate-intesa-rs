@@ -31,11 +31,6 @@ class HtmlParser
     private $rates;
 
     /**
-     * @var array
-     */
-    private $currentRate;
-
-    /**
      * @var \DateTime
      */
     private $date;
@@ -56,6 +51,9 @@ class HtmlParser
         $this->date = $date;
     }
 
+    /**
+     * @return array|\RunOpenCode\ExchangeRate\Contract\RateInterface[]
+     */
     public function getRates()
     {
         if (!$this->rates) {
@@ -65,6 +63,11 @@ class HtmlParser
         return $this->rates;
     }
 
+    /**
+     * @param $html string
+     * @param \DateTime $date
+     * @return array
+     */
     private function parseHtml($html, \DateTime $date)
     {
         $crawler = new Crawler($html);
@@ -73,6 +76,11 @@ class HtmlParser
         return $this->extractRates($crawler, $date);
     }
 
+    /**
+     * @param Crawler $crawler
+     * @param \DateTime $date
+     * @return array
+     */
     private function extractRates(Crawler $crawler, \DateTime $date)
     {
         $rates = array();
@@ -90,43 +98,46 @@ class HtmlParser
                     $date
                 );
 
-                if ($row['foreign_exchange_buying'] > 0) {
-                    $rates[] = $this->buildRate(
-                        $row['foreign_exchange_buying'] / $row['unit'],
-                        $row['currencyCode'],
-                        'foreign_exchange_buying',
-                        $date
-                    );
-                }
+                $rates[] = $this->buildRate(
+                    $row['foreign_exchange_buying'] / $row['unit'],
+                    $row['currencyCode'],
+                    'foreign_exchange_buying',
+                    $date
+                );
 
-                if ($row['foreign_exchange_selling'] > 0) {
-                    $rates[] = $this->buildRate(
-                        $row['foreign_exchange_selling'] / $row['unit'],
-                        $row['currencyCode'],
-                        'foreign_exchange_selling',
-                        $this->date
-                    );
-                }
+                $rates[] = $this->buildRate(
+                    $row['foreign_exchange_selling'] / $row['unit'],
+                    $row['currencyCode'],
+                    'foreign_exchange_selling',
+                    $this->date
+                );
 
-                if ($row['foreign_cash_buying'] > 0) {
-                    $rates[] = $this->buildRate(
-                        $row['foreign_cash_buying'] / $row['unit'],
-                        $row['currencyCode'],
-                        'foreign_cash_buying',
-                        $this->date
-                    );
-                }
+                $rates[] = $this->buildRate(
+                    $row['foreign_cash_buying'] / $row['unit'],
+                    $row['currencyCode'],
+                    'foreign_cash_buying',
+                    $this->date
+                );
 
-                if ($row['foreign_cash_selling'] > 0) {
-                    $rates[] = $this->buildRate(
-                        $row['foreign_cash_selling'] / $row['unit'],
-                        $row['currencyCode'],
-                        'foreign_cash_selling',
-                        $this->date
-                    );
-                }
+                $rates[] = $this->buildRate(
+                    $row['foreign_cash_selling'] / $row['unit'],
+                    $row['currencyCode'],
+                    'foreign_cash_selling',
+                    $this->date
+                );
+
             }
         });
+
+        /**
+         * @var Rate $rate
+         */
+        foreach ($rates as $key => $rate){
+            if (!$rate->getValue()) {
+                unset($rates[$key]);
+            }
+        }
+
 
         return $rates;
     }
