@@ -140,42 +140,40 @@ class HtmlParser
         return $rates;
     }
 
+    /**
+     * @param Crawler $crawler
+     * @return array|null
+     */
     private function parseRow(Crawler $crawler)
     {
         $currentRow = array(
             'currencyCode' => ''
         );
 
-        $crawler->filter('td')->each(function (Crawler $node, $i) use (&$currentRow) {
-
-            switch ($i) {
-                case 1:
-                    $currentRow['currencyCode'] = trim($node->text());
-                    break;
-                case 2:
-                    $currentRow['unit'] = (int)trim($node->text());
-                    break;
-                case 3:
-                    $currentRow['foreign_exchange_buying'] = (float)trim($node->text());
-                    break;
-                case 4:
-                    $currentRow['default'] = (float)trim($node->text());
-                    break;
-                case 5:
-                    $currentRow['foreign_exchange_selling'] = (float)trim($node->text());
-                    break;
-                case 6:
-                    $currentRow['foreign_cash_buying'] = (float)trim($node->text());
-                    break;
-                case 7:
-                    $currentRow['foreign_cash_selling'] = (float)trim($node->text());
-                    break;
-            }
+        $nodeValues = $crawler->filter('td')->each(function (Crawler $node, $i) {
+            return trim($node->text());
         });
+
+        if (count($nodeValues)) {
+            $currentRow['currencyCode'] = $nodeValues[1];
+            $currentRow['unit'] = (int) $nodeValues[2];
+            $currentRow['foreign_exchange_buying'] = (float) $nodeValues[3];
+            $currentRow['default'] = (float) $nodeValues[4];
+            $currentRow['foreign_exchange_selling'] = (float) $nodeValues[5];
+            $currentRow['foreign_cash_buying'] = (float) $nodeValues[6];
+            $currentRow['foreign_cash_selling'] = (float) $nodeValues[7];
+        }
 
         return strlen($currentRow['currencyCode']) === 3 ? $currentRow : null;
     }
 
+    /**
+     * @param $value
+     * @param $currencyCode
+     * @param $rateType
+     * @param $date
+     * @return Rate
+     */
     private function buildRate($value, $currencyCode, $rateType, $date) {
 
         return new Rate(
