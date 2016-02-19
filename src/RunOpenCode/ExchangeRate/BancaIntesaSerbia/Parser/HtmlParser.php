@@ -150,7 +150,7 @@ class HtmlParser
             'currencyCode' => ''
         );
 
-        $nodeValues = $crawler->filter('td')->each(function (Crawler $node, $i) {
+        $nodeValues = $crawler->filter('td')->each(function (Crawler $node) {
             return trim($node->text());
         });
 
