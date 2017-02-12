@@ -4,12 +4,14 @@
  *
  * Implementation of exchange rate crawler for Banca Intesa Serbia, http://www.bancaintesa.rs.
  *
- * (c) 2016 RunOpenCode
+ * (c) 2017 RunOpenCode
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 namespace RunOpenCode\ExchangeRate\BancaIntesaSerbia;
+
+use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Enum\RateType;
 
 /**
  * Class Api
@@ -33,15 +35,15 @@ final class Api
      * @var array
      */
     private static $supports = array(
-        'default' => array('EUR', 'AUD', 'ATS', 'BEF', 'CAD', 'CNY', 'HRK', 'CZK', 'DKK', 'FIM', 'FRF', 'DEM', 'GRD',
+        RateType::DEFAULT => array('EUR', 'AUD', 'ATS', 'BEF', 'CAD', 'CNY', 'HRK', 'CZK', 'DKK', 'FIM', 'FRF', 'DEM', 'GRD',
                            'HUF', 'IEP', 'ITL', 'JPY', 'KWD', 'LUF', 'NOK', 'PTE', 'RUB', 'SKK', 'ESP', 'SEK', 'CHF',
                            'GBP', 'USD', 'BAM', 'PLN'),
-        'foreign_cash_buying' => array('EUR', 'AUD', 'CAD', 'HRK', 'CZK', 'DKK', 'HUF', 'JPY', 'NOK', 'RUB', 'SEK',
+        RateType::FOREIGN_CASH_BUYING => array('EUR', 'AUD', 'CAD', 'HRK', 'CZK', 'DKK', 'HUF', 'JPY', 'NOK', 'RUB', 'SEK',
                                        'CHF', 'GBP', 'USD', 'BAM', 'PLN'),
-        'foreign_cash_selling' => array('EUR', 'AUD', 'CAD', 'HRK', 'CZK', 'DKK', 'HUF', 'JPY', 'NOK', 'RUB', 'SEK',
+        RateType::FOREIGN_CASH_SELLING => array('EUR', 'AUD', 'CAD', 'HRK', 'CZK', 'DKK', 'HUF', 'JPY', 'NOK', 'RUB', 'SEK',
                                         'CHF', 'GBP', 'USD', 'BAM', 'PLN'),
-        'foreign_exchange_buying' => array('EUR', 'AUD', 'CAD', 'CNY', 'DKK', 'JPY', 'NOK', 'RUB', 'SEK', 'CHF', 'GBP', 'USD'),
-        'foreign_exchange_selling' => array('EUR', 'AUD', 'CAD', 'CNY', 'DKK', 'JPY', 'NOK', 'RUB', 'SEK', 'CHF', 'GBP', 'USD')
+        RateType::FOREIGN_EXCHANGE_BUYING => array('EUR', 'AUD', 'CAD', 'CNY', 'DKK', 'JPY', 'NOK', 'RUB', 'SEK', 'CHF', 'GBP', 'USD'),
+        RateType::FOREIGN_EXCHANGE_SELLING => array('EUR', 'AUD', 'CAD', 'CNY', 'DKK', 'JPY', 'NOK', 'RUB', 'SEK', 'CHF', 'GBP', 'USD')
     );
 
     private function __construct() { }

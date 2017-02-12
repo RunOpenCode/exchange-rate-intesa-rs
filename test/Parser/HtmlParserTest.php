@@ -4,16 +4,17 @@
  *
  * Implementation of exchange rate crawler for Banca Intesa Serbia, http://www.bancaintesa.rs.
  *
- * (c) 2016 RunOpenCode
+ * (c) 2017 RunOpenCode
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 namespace RunOpenCode\ExchangeRate\BancaIntesaSerbia\Tests\Parser;
 
+use PHPUnit\Framework\TestCase;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Parser\HtmlParser;
 
-class HtmlParserTest extends \PHPUnit_Framework_TestCase
+class HtmlParserTest extends TestCase
 {
 
     /**

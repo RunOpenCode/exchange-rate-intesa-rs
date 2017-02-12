@@ -4,13 +4,14 @@
  *
  * Implementation of exchange rate crawler for Banca Intesa Serbia, http://www.bancaintesa.rs.
  *
- * (c) 2016 RunOpenCode
+ * (c) 2017 RunOpenCode
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 namespace RunOpenCode\ExchangeRate\BancaIntesaSerbia\Parser;
 
+use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Enum\RateType;
 use RunOpenCode\ExchangeRate\Contract\RateInterface;
 use RunOpenCode\ExchangeRate\Model\Rate;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Api;
@@ -83,46 +84,46 @@ class HtmlParser
      */
     private function extractRates(Crawler $crawler, \DateTime $date)
     {
-        $rates = array();
+        $extractedRates = array();
 
-        $crawler->filter('tr')->each(function (Crawler $node) use ($date, &$rates) {
+        $crawler->filter('tr')->each(function (Crawler $node) use ($date, &$extractedRates) {
 
             $row = $this->parseRow($node);
 
             if (null !== $row) {
 
-                $rates[] = $this->buildRate(
-                    $row['default'] / $row['unit'],
+                $extractedRates[] = $this->buildRate(
+                    $row[RateType::DEFAULT] / $row['unit'],
                     $row['currencyCode'],
-                    'default',
+                    RateType::DEFAULT,
                     $date
                 );
 
-                $rates[] = $this->buildRate(
-                    $row['foreign_exchange_buying'] / $row['unit'],
+                $extractedRates[] = $this->buildRate(
+                    $row[RateType::FOREIGN_EXCHANGE_BUYING] / $row['unit'],
                     $row['currencyCode'],
-                    'foreign_exchange_buying',
+                    RateType::FOREIGN_EXCHANGE_BUYING,
                     $date
                 );
 
-                $rates[] = $this->buildRate(
-                    $row['foreign_exchange_selling'] / $row['unit'],
+                $extractedRates[] = $this->buildRate(
+                    $row[RateType::FOREIGN_EXCHANGE_SELLING] / $row['unit'],
                     $row['currencyCode'],
-                    'foreign_exchange_selling',
+                    RateType::FOREIGN_EXCHANGE_SELLING,
                     $this->date
                 );
 
-                $rates[] = $this->buildRate(
-                    $row['foreign_cash_buying'] / $row['unit'],
+                $extractedRates[] = $this->buildRate(
+                    $row[RateType::FOREIGN_CASH_BUYING] / $row['unit'],
                     $row['currencyCode'],
-                    'foreign_cash_buying',
+                    RateType::FOREIGN_CASH_BUYING,
                     $this->date
                 );
 
-                $rates[] = $this->buildRate(
-                    $row['foreign_cash_selling'] / $row['unit'],
+                $extractedRates[] = $this->buildRate(
+                    $row[RateType::FOREIGN_CASH_SELLING] / $row['unit'],
                     $row['currencyCode'],
-                    'foreign_cash_selling',
+                    RateType::FOREIGN_CASH_SELLING,
                     $this->date
                 );
             }
@@ -131,13 +132,13 @@ class HtmlParser
         /**
          * @var Rate $rate
          */
-        foreach ($rates as $key => $rate){
+        foreach ($extractedRates as $key => $rate){
             if (!$rate->getValue()) {
-                unset($rates[$key]);
+                unset($extractedRates[$key]);
             }
         }
 
-        return $rates;
+        return $extractedRates;
     }
 
     private function parseRow(Crawler $crawler)
@@ -156,19 +157,19 @@ class HtmlParser
                     $currentRow['unit'] = (int)trim($node->text());
                     break;
                 case 3:
-                    $currentRow['foreign_exchange_buying'] = (float)trim($node->text());
+                    $currentRow[RateType::FOREIGN_EXCHANGE_BUYING] = (float)trim($node->text());
                     break;
                 case 4:
-                    $currentRow['default'] = (float)trim($node->text());
+                    $currentRow[RateType::DEFAULT] = (float)trim($node->text());
                     break;
                 case 5:
-                    $currentRow['foreign_exchange_selling'] = (float)trim($node->text());
+                    $currentRow[RateType::FOREIGN_EXCHANGE_SELLING] = (float)trim($node->text());
                     break;
                 case 6:
-                    $currentRow['foreign_cash_buying'] = (float)trim($node->text());
+                    $currentRow[RateType::FOREIGN_CASH_BUYING] = (float)trim($node->text());
                     break;
                 case 7:
-                    $currentRow['foreign_cash_selling'] = (float)trim($node->text());
+                    $currentRow[RateType::FOREIGN_CASH_SELLING] = (float)trim($node->text());
                     break;
             }
         });
