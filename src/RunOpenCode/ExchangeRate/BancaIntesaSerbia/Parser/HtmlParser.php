@@ -141,42 +141,40 @@ class HtmlParser
         return $extractedRates;
     }
 
+    /**
+     * @param Crawler $crawler
+     * @return array|null
+     */
     private function parseRow(Crawler $crawler)
     {
         $currentRow = array(
             'currencyCode' => ''
         );
 
-        $crawler->filter('td')->each(function (Crawler $node, $i) use (&$currentRow) {
-
-            switch ($i) {
-                case 1:
-                    $currentRow['currencyCode'] = trim($node->text());
-                    break;
-                case 2:
-                    $currentRow['unit'] = (int)trim($node->text());
-                    break;
-                case 3:
-                    $currentRow[RateType::FOREIGN_EXCHANGE_BUYING] = (float)trim($node->text());
-                    break;
-                case 4:
-                    $currentRow[RateType::DEFAULT] = (float)trim($node->text());
-                    break;
-                case 5:
-                    $currentRow[RateType::FOREIGN_EXCHANGE_SELLING] = (float)trim($node->text());
-                    break;
-                case 6:
-                    $currentRow[RateType::FOREIGN_CASH_BUYING] = (float)trim($node->text());
-                    break;
-                case 7:
-                    $currentRow[RateType::FOREIGN_CASH_SELLING] = (float)trim($node->text());
-                    break;
-            }
+        $nodeValues = $crawler->filter('td')->each(function (Crawler $node) {
+            return trim($node->text());
         });
+
+        if (count($nodeValues)) {
+            $currentRow['currencyCode'] = trim($nodeValues[1]);
+            $currentRow['unit'] = (int) trim($nodeValues[2]);
+            $currentRow[RateType::FOREIGN_EXCHANGE_BUYING] = (float) trim($nodeValues[3]);
+            $currentRow[RateType::DEFAULT] = (float) trim($nodeValues[4]);
+            $currentRow[RateType::FOREIGN_EXCHANGE_SELLING] = (float) trim($nodeValues[5]);
+            $currentRow[RateType::FOREIGN_CASH_BUYING] = (float) trim($nodeValues[6]);
+            $currentRow[RateType::FOREIGN_CASH_SELLING] = (float) trim($nodeValues[7]);
+        }
 
         return strlen($currentRow['currencyCode']) === 3 ? $currentRow : null;
     }
 
+    /**
+     * @param $value
+     * @param $currencyCode
+     * @param $rateType
+     * @param $date
+     * @return Rate
+     */
     private function buildRate($value, $currencyCode, $rateType, $date) {
 
         return new Rate(
