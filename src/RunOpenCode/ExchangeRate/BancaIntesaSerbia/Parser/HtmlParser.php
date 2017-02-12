@@ -11,7 +11,7 @@
  */
 namespace RunOpenCode\ExchangeRate\BancaIntesaSerbia\Parser;
 
-use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Enum\RateType;
+use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Enum\RateType\RateType;
 use RunOpenCode\ExchangeRate\Contract\RateInterface;
 use RunOpenCode\ExchangeRate\Model\Rate;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Api;
