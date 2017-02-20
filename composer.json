@@ -40,7 +40,14 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0",
-        "mockery/mockery": "~0.9|~1.0"
+        "mockery/mockery": "~0.9|~1.0",
+        "squizlabs/php_codesniffer": "~2.0",
+        "phploc/phploc": "dev-master",
+        "pdepend/pdepend" : "~2.5",
+        "phpmd/phpmd" : "@stable",
+        "sebastian/phpcpd": "dev-master",
+        "theseer/phpdox": "dev-master",
+        "escapestudios/symfony2-coding-standard": "~2.0"
     },
     "suggest": {
         "runopencode/exchange-rate-bundle": "Exchange rate Symfony bundle."

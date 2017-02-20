@@ -93,9 +93,9 @@ class HtmlParser
             if (null !== $row) {
 
                 $extractedRates[] = $this->buildRate(
-                    $row[RateType::DEFAULT] / $row['unit'],
+                    $row[RateType::MEDIAN] / $row['unit'],
                     $row['currencyCode'],
-                    RateType::DEFAULT,
+                    RateType::MEDIAN,
                     $date
                 );
 
@@ -159,7 +159,7 @@ class HtmlParser
             $currentRow['currencyCode'] = trim($nodeValues[1]);
             $currentRow['unit'] = (int) trim($nodeValues[2]);
             $currentRow[RateType::FOREIGN_EXCHANGE_BUYING] = (float) trim($nodeValues[3]);
-            $currentRow[RateType::DEFAULT] = (float) trim($nodeValues[4]);
+            $currentRow[RateType::MEDIAN] = (float) trim($nodeValues[4]);
             $currentRow[RateType::FOREIGN_EXCHANGE_SELLING] = (float) trim($nodeValues[5]);
             $currentRow[RateType::FOREIGN_CASH_BUYING] = (float) trim($nodeValues[6]);
             $currentRow[RateType::FOREIGN_CASH_SELLING] = (float) trim($nodeValues[7]);

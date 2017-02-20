@@ -60,7 +60,7 @@ final class WebPageSource implements SourceInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch($currencyCode, $rateType = RateType::DEFAULT, \DateTime $date = null)
+    public function fetch($currencyCode, $rateType = RateType::MEDIAN, \DateTime $date = null)
     {
         $currencyCode = CurrencyCodeUtil::clean($currencyCode);
 

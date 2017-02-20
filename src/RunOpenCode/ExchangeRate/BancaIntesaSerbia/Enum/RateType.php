@@ -18,7 +18,7 @@ namespace RunOpenCode\ExchangeRate\BancaIntesaSerbia\Enum;
  */
 final class RateType
 {
-    const DEFAULT = \RunOpenCode\ExchangeRate\Enum\RateType::DEFAULT;
+    const MEDIAN = 'median';
     const FOREIGN_CASH_BUYING = 'foreign_cash_buying';
     const FOREIGN_CASH_SELLING = 'foreign_cash_selling';
     const FOREIGN_EXCHANGE_BUYING = 'foreign_exchange_buying';

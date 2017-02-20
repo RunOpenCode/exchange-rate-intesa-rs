@@ -12,6 +12,7 @@
 namespace RunOpenCode\ExchangeRate\BancaIntesaSerbia\Tests\Source;
 
 use PHPUnit\Framework\TestCase;
+use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Enum\RateType;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Util\BancaIntesaBrowser;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Source\WebPageSource;
 
@@ -22,7 +23,7 @@ class WebPageSourceTest extends TestCase
      */
     public function fetchMedian()
     {
-        $rate = $this->mockSource('default')->fetch('EUR', 'default');
+        $rate = $this->mockSource(RateType::MEDIAN)->fetch('EUR', RateType::MEDIAN);
         $this->assertSame(122.4168, $rate->getValue());
     }
 
@@ -31,7 +32,7 @@ class WebPageSourceTest extends TestCase
      */
     public function fetchForeignCash()
     {
-        $rate = $this->mockSource('foreign_cash_buying')->fetch('EUR', 'foreign_cash_buying');
+        $rate = $this->mockSource(RateType::FOREIGN_CASH_BUYING)->fetch('EUR', RateType::FOREIGN_CASH_BUYING);
         $this->assertSame(119.3564, $rate->getValue());
     }
 
@@ -40,7 +41,7 @@ class WebPageSourceTest extends TestCase
      */
     public function fetchForeignExchange()
     {
-        $rate = $this->mockSource('foreign_exchange_buying')->fetch('EUR', 'foreign_exchange_buying');
+        $rate = $this->mockSource(RateType::FOREIGN_EXCHANGE_BUYING)->fetch('EUR', RateType::FOREIGN_EXCHANGE_BUYING);
         $this->assertSame(119.3564, $rate->getValue());
     }
 
