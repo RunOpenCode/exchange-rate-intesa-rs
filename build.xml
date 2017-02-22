@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="name-of-project" default="full-build">
+<project name="runopencode/exchange-rate-intesa-rs" default="full-build">
 
     <property name="composer" value="composer"/>
     <property name="composer-command" value="install"/>
