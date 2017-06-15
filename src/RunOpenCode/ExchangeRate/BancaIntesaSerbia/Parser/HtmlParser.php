@@ -175,17 +175,8 @@ class HtmlParser
      * @param $date
      * @return Rate
      */
-    private function buildRate($value, $currencyCode, $rateType, $date) {
-
-        return new Rate(
-            Api::NAME,
-            $value,
-            $currencyCode,
-            $rateType,
-            $date,
-            'RSD',
-            new \DateTime('now'),
-            new \DateTime('now')
-        );
+    private function buildRate($value, $currencyCode, $rateType, $date)
+    {
+        return new Rate(Api::NAME, $value, $currencyCode, $rateType, $date, 'RSD', new \DateTime('now'), new \DateTime('now') );
     }
 }
