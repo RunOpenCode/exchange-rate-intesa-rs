@@ -12,12 +12,22 @@
 namespace RunOpenCode\ExchangeRate\BancaIntesaSerbia\Tests\Source;
 
 use PHPUnit\Framework\TestCase;
+use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Api;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Enum\RateType;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Util\BancaIntesaBrowser;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Source\WebPageSource;
 
 class WebPageSourceTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function name()
+    {
+        $source = $this->mockSource(RateType::MEDIAN);
+        $this->assertEquals(Api::NAME, $source->getName());
+    }
+
     /**
      * @test
      */
@@ -54,6 +64,34 @@ class WebPageSourceTest extends TestCase
     {
         $source = new WebPageSource(new BancaIntesaBrowser());
         $source->fetch('EUR', 'not_supported');
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException \RunOpenCode\ExchangeRate\BancaIntesaSerbia\Exception\SourceNotAvailableException
+     */
+    public function itThrowsExceptionWhenUnableToLoad()
+    {
+        $stub = $this->getMockBuilder(BancaIntesaBrowser::class)->getMock();
+        $stub->method('getHtmlDocument')->willThrowException(new \Exception());
+        $source = new WebPageSource($stub);
+        $source->fetch('EUR');
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException \RunOpenCode\ExchangeRate\BancaIntesaSerbia\Exception\RuntimeException
+     */
+    public function itThrowsExceptionWhenApiChanged()
+    {
+        $stub = $this->getMockBuilder(BancaIntesaBrowser::class)->getMock();
+        $stub->method('getHtmlDocument')->willReturn(file_get_contents(__DIR__ . '/../Fixtures/fake.html'));
+
+        $source = new WebPageSource($stub);
+
+        $source->fetch('EUR');
     }
 
     /**

@@ -24,8 +24,5 @@ final class RateType
     const FOREIGN_EXCHANGE_BUYING = 'foreign_exchange_buying';
     const FOREIGN_EXCHANGE_SELLING = 'foreign_exchange_selling';
 
-    private function __construct()
-    {
-        // noop
-    }
+    private function __construct() { /* noop */ }
 }

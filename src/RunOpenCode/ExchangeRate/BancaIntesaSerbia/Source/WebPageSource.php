@@ -16,7 +16,6 @@ use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Exception\RuntimeException;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Exception\SourceNotAvailableException;
 use RunOpenCode\ExchangeRate\Contract\RateInterface;
 use RunOpenCode\ExchangeRate\Contract\SourceInterface;
-use RunOpenCode\ExchangeRate\Log\LoggerAwareTrait;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Api;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Util\BancaIntesaBrowser;
 use RunOpenCode\ExchangeRate\BancaIntesaSerbia\Parser\HtmlParser;
@@ -31,8 +30,6 @@ use RunOpenCode\ExchangeRate\Utils\CurrencyCodeUtil;
  */
 final class WebPageSource implements SourceInterface
 {
-    use LoggerAwareTrait;
-
     /**
      * @var array
      */
@@ -78,10 +75,7 @@ final class WebPageSource implements SourceInterface
                 $this->load($date);
 
             } catch (\Exception $e) {
-                $message = sprintf('Unable to load data from "%s" for "%s" of rate type "%s".', $this->getName(), $currencyCode, $rateType);
-
-                $this->getLogger()->emergency($message);
-                throw new SourceNotAvailableException($message, 0, $e);
+                throw new SourceNotAvailableException(sprintf('Unable to load data from "%s" for "%s" of rate type "%s".', $this->getName(), $currencyCode, $rateType), 0, $e);
             }
         }
 
@@ -89,9 +83,7 @@ final class WebPageSource implements SourceInterface
             return $this->cache[$rateType][$currencyCode];
         }
 
-        $message = sprintf('API Changed: source "%s" does not provide currency code "%s" for rate type "%s".', $this->getName(), $currencyCode, $rateType);
-        $this->getLogger()->critical($message);
-        throw new RuntimeException($message);
+        throw new RuntimeException(sprintf('API Changed: source "%s" does not provide currency code "%s" for rate type "%s".', $this->getName(), $currencyCode, $rateType));
     }
 
     /**
