@@ -32,7 +32,7 @@ final class Api
      *
      * NOTE: Banca Intesa Serbia still publishes rates of some of the obsolete currencies.
      *
-     * @var array
+     * @var array<string, array<string>>
      */
     private static $supports = array(
         RateType::MEDIAN => array('EUR', 'AUD', 'ATS', 'BEF', 'CAD', 'CNY', 'HRK', 'CZK', 'DKK', 'FIM', 'FRF', 'DEM', 'GRD',

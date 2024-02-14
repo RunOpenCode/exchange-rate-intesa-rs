@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+
+  php:
+    container_name: runopencode_exchange_rate_intesa_rs_test
+    build:
+      context: './'
+    volumes:
+      -  './:/var/www/html'
