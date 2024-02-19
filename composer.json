@@ -32,9 +32,7 @@
     "require": {
         "php": ">=7.0",
         "psr/log": "1.*",
-        "guzzlehttp/guzzle": "~6.0",
-        "symfony/dom-crawler": "~2.8|~3.0",
-        "symfony/css-selector": "~2.8|~3.0",
+        "guzzlehttp/guzzle": "^6.3",
         "runopencode/exchange-rate": "~3.0",
         "roave/security-advisories": "dev-master"
     },
@@ -47,9 +45,14 @@
         "phpmd/phpmd" : "@stable",
         "sebastian/phpcpd": "dev-master",
         "theseer/phpdox": "dev-master",
-        "escapestudios/symfony2-coding-standard": "~2.0"
+        "escapestudios/symfony2-coding-standard": "~2.0",
+        "phpstan/phpstan": "^1.10"
     },
     "suggest": {
         "runopencode/exchange-rate-bundle": "Exchange rate Symfony bundle."
+    },
+    "scripts": {
+        "phpunit": "vendor/bin/phpunit",
+        "phpstan": "vendor/bin/phpstan analyse -l 9 src test"
     }
 }

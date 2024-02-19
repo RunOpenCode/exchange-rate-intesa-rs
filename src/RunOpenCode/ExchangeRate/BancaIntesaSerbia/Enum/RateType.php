@@ -9,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace RunOpenCode\ExchangeRate\BancaIntesaSerbia\Enum;
 
 /**
@@ -24,5 +25,15 @@ final class RateType
     const FOREIGN_EXCHANGE_BUYING = 'foreign_exchange_buying';
     const FOREIGN_EXCHANGE_SELLING = 'foreign_exchange_selling';
 
-    private function __construct() { /* noop */ }
+    private function __construct()
+    { /* noop */
+    }
+
+    /**
+     * @return array<string,string>
+     */
+    public static function all(): array
+    {
+        return (new \ReflectionClass(self::class))->getConstants(); //@phpstan-ignore-line
+    }
 }
