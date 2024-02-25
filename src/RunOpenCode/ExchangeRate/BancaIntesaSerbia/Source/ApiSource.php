@@ -69,7 +69,13 @@ final class ApiSource implements SourceInterface
             }
         }
 
-        return $this->cache[$currencyCode][$rateType];
+        $rate = $this->cache[$currencyCode][$rateType];
+
+        if (false === (bool)$rate->getValue()) {
+            throw new RuntimeException(sprintf('Banca Intesa Serbia does not supports currency code "%s" for rate type "%s".', $currencyCode, $rateType));
+        }
+
+        return $rate;
     }
 
     /**
