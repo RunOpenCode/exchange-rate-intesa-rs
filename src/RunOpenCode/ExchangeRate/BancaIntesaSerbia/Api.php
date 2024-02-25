@@ -39,9 +39,9 @@ final class Api
                            'HUF', 'IEP', 'ITL', 'JPY', 'KWD', 'LUF', 'NOK', 'PTE', 'RUB', 'SKK', 'ESP', 'SEK', 'CHF',
                            'GBP', 'USD', 'BAM', 'PLN'),
         RateType::FOREIGN_CASH_BUYING => array('EUR', 'AUD', 'CAD', 'HRK', 'CZK', 'DKK', 'HUF', 'JPY', 'NOK', 'RUB', 'SEK',
-                                       'CHF', 'GBP', 'USD', 'BAM', 'PLN'),
+                                       'CHF', 'GBP', 'USD'),
         RateType::FOREIGN_CASH_SELLING => array('EUR', 'AUD', 'CAD', 'HRK', 'CZK', 'DKK', 'HUF', 'JPY', 'NOK', 'RUB', 'SEK',
-                                        'CHF', 'GBP', 'USD', 'BAM', 'PLN'),
+                                        'CHF', 'GBP', 'USD'),
         RateType::FOREIGN_EXCHANGE_BUYING => array('EUR', 'AUD', 'CAD', 'CNY', 'DKK', 'JPY', 'NOK', 'RUB', 'SEK', 'CHF', 'GBP', 'USD'),
         RateType::FOREIGN_EXCHANGE_SELLING => array('EUR', 'AUD', 'CAD', 'CNY', 'DKK', 'JPY', 'NOK', 'RUB', 'SEK', 'CHF', 'GBP', 'USD')
     );

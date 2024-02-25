@@ -40,7 +40,7 @@ final class ApiSourceTest extends TestCase
     {
         yield 'Test median type' => [RateType::MEDIAN, 'EUR', 117.1679];
         yield 'Test foreign exchange buying type' => [RateType::FOREIGN_EXCHANGE_BUYING, 'USD', 103.0072];
-        yield 'Test foreign cash buying type' => [RateType::FOREIGN_CASH_BUYING, 'BAM', 0.0];
+        yield 'Test foreign cash buying type' => [RateType::FOREIGN_CASH_BUYING, 'EUR', 114.2387];
         yield 'Test foreign exchange selling type' => [RateType::FOREIGN_EXCHANGE_SELLING, 'AUD', 74.4441];
         yield 'Test foreign cash selling type' => [RateType::FOREIGN_CASH_SELLING, 'GBP', 148.3312];
     }
