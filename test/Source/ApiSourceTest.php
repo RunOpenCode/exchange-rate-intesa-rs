@@ -46,6 +46,36 @@ final class ApiSourceTest extends TestCase
     }
 
     /**
+     * @test
+     * @dataProvider getDataForTestFetchEur
+     *
+     * @return void
+     */
+    public function testFetchEur(string $type, float $expectedValue)
+    {
+        $source = new ApiSource();
+
+        $result = $source->fetch('EUR', $type, new \DateTime('2024-01-01'));
+        $this->assertSame($expectedValue, $result->getValue());
+        $this->assertSame('banca_intesa_serbia', $result->getSourceName());
+        $this->assertSame('EUR', $result->getCurrencyCode());
+        $this->assertSame($type, $result->getRateType());
+        $this->assertSame('RSD', $result->getBaseCurrencyCode());
+    }
+
+    /**
+     * @return iterable<string, array{string, float}>
+     */
+    public function getDataForTestFetchEur()
+    {
+        yield 'Test median type' => [RateType::MEDIAN, 117.1737];
+        yield 'Test foreign exchange buying type' => [RateType::FOREIGN_EXCHANGE_BUYING, 114.2444];
+        yield 'Test foreign cash buying type' => [RateType::FOREIGN_CASH_BUYING, 114.2444];
+        yield 'Test foreign exchange selling type' => [RateType::FOREIGN_EXCHANGE_SELLING, 120.103];
+        yield 'Test foreign cash selling type' => [RateType::FOREIGN_CASH_SELLING, 118.6384];
+    }
+
+    /**
      * @return void
      */
     public function testItThrowsUnknownCurrencyExceptionInvalidCurrencyIsProvided()
