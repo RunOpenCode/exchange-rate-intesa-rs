@@ -32,10 +32,10 @@ final class ApiSource implements SourceInterface
     const URL = 'https://www.bancaintesa.rs/digitalServicesServlet/';
 
     const API_RATE_TYPES = [
-        RateType::FOREIGN_EXCHANGE_BUYING => 'buyRateCash',
-        RateType::FOREIGN_CASH_BUYING => 'buyRate',
-        RateType::FOREIGN_EXCHANGE_SELLING => 'sellingRateCash',
-        RateType::FOREIGN_CASH_SELLING => 'sellingRate',
+        RateType::FOREIGN_EXCHANGE_BUYING => 'buyRate',
+        RateType::FOREIGN_CASH_BUYING => 'buyRateCash',
+        RateType::FOREIGN_EXCHANGE_SELLING => 'sellingRate',
+        RateType::FOREIGN_CASH_SELLING => 'sellingRateCash',
         RateType::MEDIAN => 'meanRate',
     ];
 
